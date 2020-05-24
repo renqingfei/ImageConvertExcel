@@ -1,4 +1,4 @@
-package com.excel.demo.test;
+package com.excel.demo.util;
 
 import com.baidu.aip.ocr.AipOcr;
 import org.json.JSONArray;
@@ -15,31 +15,32 @@ public class ImageConvertExcel {
 
     public static void main(String[] args) {
         AipOcr aipOcr = new AipOcr(APPID,APIKEY,SecretKey);
-        try {
-            sample(aipOcr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject sample = sample(aipOcr);
+//            String url = getSample(aipOcr, sample);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        String s = tableRecognition(aipOcr, "/Users/rqf/ImageConvertExcel/pic/1590309001419.jpeg");
+        System.out.println(s);
     }
 
-    public static void sample(AipOcr client) {
+    public static JSONObject sample(AipOcr client) {
         // 传入可选参数调用接口
         HashMap<String, String> options = new HashMap<String, String>();
 
 
         // 参数为本地图片路径
-        String image = "/Users/rqf/IdeaProjects/ImageConvertExcel/src/main/webapp/image/222.jpeg";
-//        JSONObject res = client.tableRecognitionAsync(image, options);
-//        System.out.println(res.toString(2));
-
+        String image = "/Users/rqf/ImageConvertExcel/src/main/webapp/image/WechatIMG130.jpeg";
         // 参数为本地图片二进制数组
         byte[] file = readImageFile(image);
         JSONObject res = client.tableRecognitionAsync(file, options);
         System.out.println(res.toString(2));
-        getSample(client,res);
+        return res;
     }
 
-    public static void getSample(AipOcr client,JSONObject res) {
+    public static String getSample(AipOcr client,JSONObject res) {
         // 传入可选参数调用接口
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("result_type", "excel");
@@ -54,6 +55,7 @@ public class ImageConvertExcel {
         String url = (String)((JSONObject) result.get("result")).get("result_data");
         System.out.println("------------------------------------------------------------------------------");
         System.out.println(url);
+        return url;
 
     }
     private static byte[] readImageFile(String image) {
@@ -83,5 +85,13 @@ public class ImageConvertExcel {
             e.printStackTrace();
         }
         return buffer;
+    }
+
+    public static String tableRecognition(AipOcr client, String file) {
+        JSONObject excelres = client.tableRecognizeToExcelUrl(file, 20000);
+        String url = (String)((JSONObject) excelres.get("result")).get("result_data");
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println(url);
+        return url;
     }
 }

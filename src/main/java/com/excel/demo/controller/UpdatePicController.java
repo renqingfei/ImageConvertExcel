@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import sun.misc.BASE64Decoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
@@ -21,11 +22,12 @@ public class UpdatePicController {
     static String SecretKey = "mmpKUC0Lo08ozF4vOutxhf7dI2bAHrPZ";
     @RequestMapping("/upload")
     @ResponseBody
-    public String updatePic(String pic){
+    public String updatePic(String pic, HttpServletRequest request){
         try {
             if(!StringUtils.isEmpty(pic)){
                 AipOcr aipOcr = new AipOcr(APPID,APIKEY,SecretKey);
-                String path = base64ToFile("pic",pic.split(";")[1],System.currentTimeMillis()+".jpeg");
+                String s = request.getSession().getServletContext().getRealPath("/pic/") + File.separator;
+                String path = base64ToFile(s,pic.split(";")[1],System.currentTimeMillis()+".png");
                 String url = tableRecognition(aipOcr, path);
                 return url;
             }
@@ -112,7 +114,7 @@ public class UpdatePicController {
     }
 
     public String tableRecognition(AipOcr client, String file) {
-        JSONObject excelres = client.tableRecognizeToExcelUrl(file, 20000);
+        JSONObject excelres = client.tableRecognizeToExcelUrl(file, 2000);
         String url = (String)((JSONObject) excelres.get("result")).get("result_data");
         System.out.println("------------------------------------------------------------------------------");
         System.out.println(url);

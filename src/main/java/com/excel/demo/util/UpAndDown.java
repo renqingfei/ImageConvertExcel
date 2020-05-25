@@ -30,6 +30,12 @@ import java.util.UUID;
 
  */
                     myFilePath = request.getSession().getServletContext().getRealPath("/pic")  + File.separator + filename;
+                    //创建文件目录
+                    String filePath=request.getSession().getServletContext().getRealPath("/pic")  + File.separator;
+                    File  dir=new File(filePath);
+                    if (!dir.exists() && !dir.isDirectory()) {
+                        dir.mkdirs();
+                    }
                     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(myFilePath)));
                     out.write(myFile.getBytes());
                     out.flush();

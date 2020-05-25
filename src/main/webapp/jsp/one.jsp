@@ -14,5 +14,10 @@
 <input type="submit">
 </form>
 </body>
-
+<script>
+    var url = "${urls}"
+    if(url!=null&&url!=''&&url!=undefined){
+        location.href = url;
+    }
+</script>
 </html>

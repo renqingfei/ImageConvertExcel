@@ -90,8 +90,6 @@ public class ImageConvertExcel {
     public static String tableRecognition(AipOcr client, String file) {
         JSONObject excelres = client.tableRecognizeToExcelUrl(file, 20000);
         String url = (String)((JSONObject) excelres.get("result")).get("result_data");
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println(url);
         return url;
     }
 }

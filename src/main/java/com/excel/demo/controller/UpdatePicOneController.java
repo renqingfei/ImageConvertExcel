@@ -24,7 +24,7 @@ public class UpdatePicOneController {
             String s = request.getSession().getServletContext().getRealPath("/pic") + File.separator + path;
             String url = ImageConvertExcel.tableRecognition(aipOcr, s);
             request.setAttribute("urls", url);
-            return "URL";
+            return "one";
         }
         return null;
     }

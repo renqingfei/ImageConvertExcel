@@ -9,7 +9,12 @@
 </head>
 
 <body>
-<a href="${urls}"></a>
-</body>
+<div id = "url">
 
+</div>
+</body>
+<script>
+    var url = "${urls}"
+    location.href = url;
+</script>
 </html>
